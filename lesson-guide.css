@@ -1,0 +1,15 @@
+.guide{padding:3px 0 27px;margin-bottom:24px;border-bottom:1px solid #e5edf3;color:#42536a;line-height:1.7}
+.guide-kicker{display:inline-block;background:#e4f8f0;color:#168467;border-radius:20px;padding:5px 11px;font-size:12px;font-weight:800}
+.guide h2{font-size:23px;letter-spacing:-.6px;color:#17263b;margin:17px 0 8px}
+.guide h3{font-size:16px;color:#1e3349;margin:24px 0 9px}
+.guide p{margin:9px 0 14px}
+.guide ol{list-style:none;padding:0;margin:13px 0;display:grid;gap:10px}
+.guide li{display:flex;gap:12px;align-items:flex-start;background:#f5f9fc;border-radius:11px;padding:12px 14px}
+.guide-number{flex:0 0 25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#d8f4e9;color:#137f60;font-size:12px;font-weight:800}
+.guide .code-sample{margin:10px 0}
+.guide-note{background:#f0f7fd;border-left:3px solid #69aee0;padding:11px 14px;border-radius:0 8px 8px 0;font-size:13px}
+.task-guide{background:#f2faf7;border:1px solid #d8eee5;border-radius:13px;padding:17px 18px;margin-bottom:19px;color:#315b4c;line-height:1.6}
+.task-guide strong{font-size:15px;color:#1a674e}
+.task-guide p{margin:8px 0}
+.task-guide-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:12px}
+.task-guide-actions .link-btn{padding:0}
