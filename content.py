@@ -2,7 +2,7 @@
 
 LEVELS = [
     dict(title="Основы SQL", topic="SELECT · FROM · LIMIT", theory="SQL помогает задавать вопросы таблицам. SELECT выбирает столбцы, FROM указывает таблицу, LIMIT ограничивает число строк.", example="SELECT name, city\nFROM users\nLIMIT 3;", tasks=[
-        ("Имена пользователей", "Выведи имена всех пользователей.", "SELECT name FROM users", "Начни с SELECT name.", "Таблица называется users.", "SELECT name FROM users;", "SELECT выбирает только столбец name."),
+        ("Имена пользователей", "В таблице users хранятся пользователи. Покажи столбец name для каждого из них. В результате должен быть один столбец с заголовком name и пять строк.", "SELECT name FROM users", "SELECT указывает, какой столбец показать: name.", "FROM указывает источник строк: users. Слово «каждого» означает, что WHERE и LIMIT не нужны.", "SELECT name FROM users;", "SELECT name выбирает один столбец, FROM users берёт строки таблицы пользователей. Так как нет WHERE и LIMIT, выводятся все пять имён."),
         ("Первые три товара · финал", "Покажи название и цену первых трёх товаров.", "SELECT name, price FROM products LIMIT 3", "Нужны два столбца.", "Используй LIMIT 3 после FROM products.", "SELECT name, price FROM products LIMIT 3;", "LIMIT оставляет три первые строки в исходном порядке."),
     ]),
     dict(title="Фильтрация", topic="WHERE · AND · OR · IN · LIKE", theory="WHERE оставляет строки, которые удовлетворяют условию. Условия можно соединять через AND и OR; LIKE ищет по шаблону, IN проверяет набор значений.", example="SELECT name\nFROM users\nWHERE age >= 18;", tasks=[

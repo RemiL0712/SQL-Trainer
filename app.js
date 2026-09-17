@@ -9,7 +9,13 @@ function enhanceLesson(){
   if(!lessonCard||!taskCard)return;
   const list = items => items.map((item,i)=>`<li><span class="guide-number">${i+1}</span><span>${esc(item)}</span></li>`).join('');
   lessonCard.insertAdjacentHTML('afterbegin', `<section class="guide" id="lesson-guide"><div class="guide-kicker">Начни здесь · 5 минут</div><h2>Как это работает</h2><p>${esc(guide.intro)}</p><h3>Разберём по шагам</h3><ol>${list(guide.steps)}</ol><h3>Шаблон запроса</h3><p class="guide-note">Замените слова по-русски на названия столбцов и таблиц из задания. Текстовые значения пишутся в одинарных кавычках.</p><pre class="code-sample">${esc(guide.pattern)}</pre><h3>Разбор примера ниже</h3><p>${esc(guide.walkthrough)}</p><div class="guide-note">Чтобы проверить пример, нажмите «Запустить пример» и посмотрите результат. Затем переходите к заданию.</div></section>`);
-  taskCard.insertAdjacentHTML('afterbegin', `<section class="task-guide"><strong>Как подступиться к заданию</strong><p>${esc(guide.practice)}</p><div class="task-guide-actions"><button class="link-btn" id="back-to-guide">Вернуться к объяснению ↑</button><span>Напишите запрос в редакторе и нажмите «Запустить и проверить».</span></div></section>`);
+  if(guide.extra)lessonCard.querySelector('.guide').insertAdjacentHTML('beforeend',`<div class="guide-note">${esc(guide.extra)}</div>`);
+  taskCard.insertAdjacentHTML('afterbegin', `<section class="task-guide"><strong>Как подступиться к заданию</strong><p>${esc(guide.taskPractice?.[task] || guide.practice)}</p><div class="task-guide-actions"><button class="link-btn" id="back-to-guide">Вернуться к объяснению ↑</button><span>Напишите запрос в редакторе и нажмите «Запустить и проверить».</span></div></section>`);
+  if((hints>=3||solved(level,task))&&data.course[level].tasks[task].explanation){
+    const explanation=`<div class="guide-explanation"><strong>Почему это работает</strong><p>${esc(data.course[level].tasks[task].explanation)}</p></div>`;
+    const anchor=taskCard.querySelector('.feedback')||taskCard.querySelector('.hint:last-of-type');
+    if(anchor)anchor.insertAdjacentHTML('afterend',explanation);else taskCard.insertAdjacentHTML('beforeend',explanation);
+  }
   document.getElementById('back-to-guide').onclick=()=>document.getElementById('lesson-guide').scrollIntoView({behavior:'smooth'});
 }
 const api = async (path, body) => { const r = await fetch('/api/'+path, {method:body?'POST':'GET',headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined}); const raw=await r.text(); let v; try{v=JSON.parse(raw)}catch{throw Error('API курса недоступен: сервер вернул страницу вместо данных. Проверьте развёртывание Netlify Functions.')} if(!r.ok) throw Error(v.error||'Ошибка сервера'); return v; };

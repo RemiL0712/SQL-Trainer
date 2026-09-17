@@ -13,3 +13,6 @@
 .task-guide p{margin:8px 0}
 .task-guide-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:12px}
 .task-guide-actions .link-btn{padding:0}
+.guide-explanation{background:#fff9e9;border:1px solid #f1dfa9;border-radius:11px;padding:14px 17px;margin:14px 0;color:#584a26;line-height:1.55}
+.guide-explanation strong{color:#684f0b}
+.guide-explanation p{margin:7px 0 0}
