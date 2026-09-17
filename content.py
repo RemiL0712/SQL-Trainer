@@ -7,7 +7,7 @@ LEVELS = [
     ]),
     dict(title="Фильтрация", topic="WHERE · AND · OR · IN · LIKE", theory="WHERE оставляет строки, которые удовлетворяют условию. Условия можно соединять через AND и OR; LIKE ищет по шаблону, IN проверяет набор значений.", example="SELECT name\nFROM users\nWHERE age >= 18;", tasks=[
         ("Совершеннолетние", "Выведи имена пользователей старше 25 лет.", "SELECT name FROM users WHERE age > 25", "Добавь условие WHERE.", "Возраст должен быть строго больше 25.", "SELECT name FROM users WHERE age > 25;", "WHERE фильтрует строки до вывода результата."),
-        ("Жители Москвы · финал", "Покажи имена и возраст пользователей из Москвы.", "SELECT name, age FROM users WHERE city = 'Москва'", "Сравни столбец city.", "Строковое значение заключи в одинарные кавычки.", "SELECT name, age FROM users WHERE city = 'Москва';", "Условие по городу оставило только подходящих пользователей."),
+        ("Жители Берлина · финал", "Покажи имена и возраст пользователей из Берлина.", "SELECT name, age FROM users WHERE city = 'Берлин'", "Сравни столбец city.", "Строковое значение заключи в одинарные кавычки.", "SELECT name, age FROM users WHERE city = 'Берлин';", "Условие по городу оставило только подходящих пользователей."),
     ]),
     dict(title="Сортировка", topic="ORDER BY · ASC · DESC · OFFSET", theory="ORDER BY задаёт порядок строк. DESC сортирует по убыванию, ASC — по возрастанию. LIMIT и OFFSET помогают получать части результата.", example="SELECT name, price\nFROM products\nORDER BY price DESC\nLIMIT 3;", tasks=[
         ("По цене", "Покажи названия и цены товаров от самых дорогих к дешёвым.", "SELECT name, price FROM products ORDER BY price DESC", "Отсортируй по price.", "Для убывания добавь DESC.", "SELECT name, price FROM products ORDER BY price DESC;", "ORDER BY price DESC ставит высокие цены первыми."),
@@ -45,7 +45,7 @@ LEVELS = [
 
 SCHEMA = """
 CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, email TEXT, age INTEGER, city TEXT);
-INSERT INTO users VALUES (1,'Алексей','alex@example.com',25,'Москва'),(2,'Иван','ivan@example.com',17,'Казань'),(3,'Анна','anna@example.com',31,'Москва'),(4,'Мария','maria@example.com',28,'Санкт-Петербург'),(5,'Павел','pavel@example.com',22,'Казань');
+INSERT INTO users VALUES (1,'Амалия','amalia@example.com',25,'Берлин'),(2,'Лео','leo@example.com',17,'Вена'),(3,'Алиса','alice@example.com',31,'Берлин'),(4,'Эмма','emma@example.com',28,'Прага'),(5,'Ноа','noah@example.com',22,'Вена');
 CREATE TABLE products(id INTEGER PRIMARY KEY, name TEXT, price INTEGER, category TEXT);
 INSERT INTO products VALUES (1,'Ноутбук',75000,'Электроника'),(2,'Наушники',3500,'Электроника'),(3,'Книга',850,'Книги'),(4,'Тетрадь',200,'Книги'),(5,'Лампа',1800,'Дом');
 CREATE TABLE orders(id INTEGER PRIMARY KEY, user_id INTEGER, total INTEGER, created_at TEXT);
@@ -56,9 +56,9 @@ INSERT INTO orders VALUES (1,1,3500,'2026-01-12 10:30:00'),(2,3,75000,'2026-02-0
 # without changing the renderer or progression logic.
 SCHEMA += """
 CREATE TABLE departments(id INTEGER PRIMARY KEY, name TEXT, city TEXT);
-INSERT INTO departments VALUES (1,'Разработка','Москва'),(2,'Продажи','Казань'),(3,'Поддержка','Тула');
+INSERT INTO departments VALUES (1,'Разработка','Берлин'),(2,'Продажи','Вена'),(3,'Поддержка','Братислава');
 CREATE TABLE employees(id INTEGER PRIMARY KEY, name TEXT, department_id INTEGER, manager_id INTEGER, salary INTEGER);
-INSERT INTO employees VALUES (1,'Ольга',1,NULL,120000),(2,'Денис',1,1,90000),(3,'Елена',2,NULL,95000),(4,'Руслан',2,3,65000),(5,'Светлана',3,NULL,70000);
+INSERT INTO employees VALUES (1,'София',1,NULL,120000),(2,'Лукас',1,1,90000),(3,'Эмилия',2,NULL,95000),(4,'Даниэль',2,3,65000),(5,'Оливия',3,NULL,70000);
 CREATE TABLE order_items(id INTEGER PRIMARY KEY, order_id INTEGER, product_id INTEGER, quantity INTEGER);
 INSERT INTO order_items VALUES (1,1,2,1),(2,2,1,1),(3,3,3,1),(4,4,5,1);
 CREATE TABLE reviews(id INTEGER PRIMARY KEY, user_id INTEGER, product_id INTEGER, rating INTEGER, comment TEXT);
