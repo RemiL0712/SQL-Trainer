@@ -1,7 +1,7 @@
 const app = document.getElementById('app');
 let data = null, page = 'dashboard', level = 0, task = 0, query = '', result = null, feedback = null, hints = 0, authMode = 'login';
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const api = async (path, body) => { const r = await fetch('/api/'+path, {method:body?'POST':'GET',headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined}); const v=await r.json(); if(!r.ok) throw Error(v.error||'Ошибка сервера'); return v; };
+const api = async (path, body) => { const r = await fetch('/api/'+path, {method:body?'POST':'GET',headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined}); const raw=await r.text(); let v; try{v=JSON.parse(raw)}catch{throw Error('API курса недоступен: сервер вернул страницу вместо данных. Проверьте развёртывание Netlify Functions.')} if(!r.ok) throw Error(v.error||'Ошибка сервера'); return v; };
 const solved = (l,t) => !!data.progress?.solved.some(s=>s.level===l&&s.task===t);
 const unlocked = l => l <= (data.progress?.unlocked ?? 0);
 const complete = l => data.course[l].tasks.every((_,i)=>solved(l,i));
