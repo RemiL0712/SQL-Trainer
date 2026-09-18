@@ -3,7 +3,7 @@
 LEVELS = [
     dict(title="Основы SQL", topic="SELECT · FROM · LIMIT", theory="SQL помогает задавать вопросы таблицам. SELECT выбирает столбцы, FROM указывает таблицу, LIMIT ограничивает число строк.", example="SELECT name, city\nFROM users\nLIMIT 3;", tasks=[
         ("Имена пользователей", "В таблице users хранятся пользователи. Покажи столбец name для каждого из них. В результате должен быть один столбец с заголовком name и пять строк.", "SELECT name FROM users", "SELECT указывает, какой столбец показать: name.", "FROM указывает источник строк: users. Слово «каждого» означает, что WHERE и LIMIT не нужны.", "SELECT name FROM users;", "SELECT name выбирает один столбец, FROM users берёт строки таблицы пользователей. Так как нет WHERE и LIMIT, выводятся все пять имён."),
-        ("Первые три товара · финал", "Покажи название и цену первых трёх товаров.", "SELECT name, price FROM products LIMIT 3", "Нужны два столбца.", "Используй LIMIT 3 после FROM products.", "SELECT name, price FROM products LIMIT 3;", "LIMIT оставляет три первые строки в исходном порядке."),
+        ("Три товара · финал", "Покажи название и цену трёх товаров из products. Используй LIMIT 3; сортировать результат не нужно.", "SELECT name, price FROM products LIMIT 3", "Нужны два столбца: name и price.", "LIMIT 3 после FROM products ограничивает число строк.", "SELECT name, price FROM products LIMIT 3;", "SELECT выбирает два столбца из products, LIMIT 3 оставляет три строки. Без ORDER BY порядок строк не гарантируется."),
     ]),
     dict(title="Фильтрация", topic="WHERE · AND · OR · IN · LIKE", theory="WHERE оставляет строки, которые удовлетворяют условию. Условия можно соединять через AND и OR; LIKE ищет по шаблону, IN проверяет набор значений.", example="SELECT name\nFROM users\nWHERE age >= 18;", tasks=[
         ("Совершеннолетние", "Выведи имена пользователей старше 25 лет.", "SELECT name FROM users WHERE age > 25", "Добавь условие WHERE.", "Возраст должен быть строго больше 25.", "SELECT name FROM users WHERE age > 25;", "WHERE фильтрует строки до вывода результата."),
@@ -39,8 +39,8 @@ LEVELS = [
     ]),
     dict(title="Продвинутый SQL", topic="CTE · ROW_NUMBER · оконные функции", theory="CTE через WITH делает сложный запрос читаемее. Оконные функции вычисляют значение для строки с учётом соседних строк, не сворачивая результат.", example="SELECT name, price, ROW_NUMBER() OVER (ORDER BY price DESC) AS position\nFROM products;", tasks=[
         ("Рейтинг товаров", "Покажи name, price и position — номер товара в порядке убывания цены.", "SELECT name, price, ROW_NUMBER() OVER (ORDER BY price DESC) AS position FROM products", "Используй ROW_NUMBER() OVER (...).", "В окне сортируй по price DESC.", "SELECT name, price, ROW_NUMBER() OVER (ORDER BY price DESC) AS position FROM products;", "ROW_NUMBER нумерует строки в заданном порядке."),
-        ("CTE дорогих товаров · финал", "Через CTE expensive выведи имена товаров с price >= 1000.", "WITH expensive AS (SELECT name FROM products WHERE price >= 1000) SELECT name FROM expensive", "Начни с WITH expensive AS (...).", "Затем SELECT name FROM expensive.", "WITH expensive AS (SELECT name FROM products WHERE price >= 1000) SELECT name FROM expensive;", "CTE даёт имя промежуточному результату запроса."),
-    ], required="WITH"),
+        ("CTE дорогих товаров · финал", "Через CTE expensive выведи имена товаров с price >= 1000.", "WITH expensive AS (SELECT name FROM products WHERE price >= 1000) SELECT name FROM expensive", "Начни с WITH expensive AS (...).", "Затем SELECT name FROM expensive.", "WITH expensive AS (SELECT name FROM products WHERE price >= 1000) SELECT name FROM expensive;", "CTE даёт имя промежуточному результату запроса.", {"required": "WITH"}),
+    ]),
 ]
 
 SCHEMA = """

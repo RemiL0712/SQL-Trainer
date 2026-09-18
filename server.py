@@ -144,6 +144,24 @@ def equal_results(actual, expected, ordered=False):
     return sorted(map(repr, actual["rows"])) == sorted(map(repr, expected["rows"]))
 
 
+def explain_mismatch(actual, expected, ordered=False, mode="read"):
+    if [c.lower() for c in actual["columns"]] != [c.lower() for c in expected["columns"]]:
+        return f"Проверьте столбцы результата. Нужно: {', '.join(expected['columns'])}. Сейчас: {', '.join(actual['columns'])}."
+    if len(actual["rows"]) != len(expected["rows"]):
+        if mode == "write":
+            return "Изменено не то количество строк. Проверьте WHERE и значения в SET или VALUES."
+        if mode == "schema":
+            return "Структура таблицы отличается: проверьте список столбцов и ограничений."
+        return f"Ожидается {len(expected['rows'])} строк, получено {len(actual['rows'])}. Проверьте WHERE, JOIN, GROUP BY или LIMIT."
+    if ordered and equal_results(actual, expected):
+        return "Значения верны, но порядок строк отличается. Проверьте ORDER BY и направление ASC или DESC."
+    if mode == "write":
+        return "Строки изменены не так, как требуется. Проверьте значения в SET или VALUES и условие WHERE."
+    if mode == "schema":
+        return "Проверьте типы, PRIMARY KEY, NOT NULL и DEFAULT у каждого столбца."
+    return "Число строк и столбцы совпали, но значения отличаются. Проверьте условия, вычисления и связи таблиц."
+
+
 def course():
     return [{"title": x["title"], "topic": x["topic"], "theory": x["theory"],
              "example": x["example"], "tasks": [{"title": t[0], "prompt": t[1],
@@ -341,7 +359,7 @@ class Handler(BaseHTTPRequestHandler):
                     correct = False
                     message = f"Результат совпал, но в финальном задании нужно использовать {required}."
                 else:
-                    message = item[6] if correct else "Запрос выполнился, но результат отличается от ожидаемого. Проверьте условия, столбцы и порядок строк."
+                    message = item[6] if correct else explain_mismatch(result, expected, meta.get("ordered", level == 2 or (level == 14 and task == 5)), mode)
                 if correct:
                     with connect() as db:
                         db.execute("INSERT OR IGNORE INTO solved(user_id,level,task,hints,solved_at) VALUES(?,?,?,?,?)",

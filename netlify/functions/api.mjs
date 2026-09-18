@@ -34,6 +34,23 @@ class HttpError extends Error {
   constructor(status, message) { super(message); this.status = status; }
 }
 
+function explainMismatch(actual, expected, ordered, mode) {
+  const sameColumns = JSON.stringify(actual.columns.map(x => x.toLowerCase())) ===
+    JSON.stringify(expected.columns.map(x => x.toLowerCase()));
+  if (!sameColumns) {
+    return `Проверьте столбцы результата. Нужно: ${expected.columns.join(', ')}. Сейчас: ${actual.columns.join(', ')}.`;
+  }
+  if (actual.rows.length !== expected.rows.length) {
+    if (mode === 'write') return 'Изменено не то количество строк. Проверьте условие WHERE и значения в SET или VALUES.';
+    if (mode === 'schema') return 'Структура таблицы отличается: проверьте список столбцов и ограничений.';
+    return `Ожидается ${expected.rows.length} строк, получено ${actual.rows.length}. Проверьте WHERE, JOIN, GROUP BY или LIMIT.`;
+  }
+  if (ordered && equalResults(actual, expected, false)) return 'Значения верны, но порядок строк отличается. Проверьте ORDER BY и направление ASC или DESC.';
+  if (mode === 'write') return 'Строки изменены не так, как требуется. Проверьте значения в SET или VALUES и условие WHERE.';
+  if (mode === 'schema') return 'Проверьте типы, PRIMARY KEY, NOT NULL и DEFAULT у каждого столбца.';
+  return 'Число строк и столбцы совпали, но значения отличаются. Проверьте условия, вычисления и связи таблиц.';
+}
+
 function progress(account) {
   const solved = account.solved || [];
   const done = new Set(solved.map(x => `${x.level}:${x.task}`));
@@ -180,7 +197,7 @@ export function createHandler(stores = {}) {
         const expected = await runSQL(item.solution, item.mode, item.target);
         let correct = equalResults(result, expected, level === 2 || (level === 14 && task === 5));
         const required = item.required || (task === COURSE[level].tasks.length - 1 ? COURSE[level].required : null);
-        let message = correct ? item.explanation : 'Запрос выполнился, но результат отличается от ожидаемого. Проверьте условия и столбцы.';
+        let message = correct ? item.explanation : explainMismatch(result, expected, level === 2 || (level === 14 && task === 5), item.mode);
         if (correct && required && !new RegExp(`\\b${required}\\b`, 'i').test(query)) {
           correct = false;
           message = `Результат совпал, но нужно использовать ${required}.`;

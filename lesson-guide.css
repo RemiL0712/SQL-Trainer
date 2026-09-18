@@ -13,6 +13,12 @@
 .task-guide p{margin:8px 0}
 .task-guide-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:12px}
 .task-guide-actions .link-btn{padding:0}
+.task-learning{display:grid;gap:10px;margin:14px 0 18px}
+.task-learning>div{background:#fff;border:1px solid #dcefe7;border-radius:9px;padding:12px 14px}
+.task-learning b{font-size:12px;color:#156d50;text-transform:uppercase;letter-spacing:.5px}
+.task-learning p{margin:6px 0 0;color:#3f5660}
+.example-output:not(:empty){margin-top:15px}
+.example-output .guide-note{margin-bottom:10px}
 .guide-explanation{background:#fff9e9;border:1px solid #f1dfa9;border-radius:11px;padding:14px 17px;margin:14px 0;color:#584a26;line-height:1.55}
 .guide-explanation strong{color:#684f0b}
 .guide-explanation p{margin:7px 0 0}
