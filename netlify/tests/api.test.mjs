@@ -93,7 +93,7 @@ test('every exercise has distinct teaching material before practice', () => {
     assert.equal(window.TASK_LESSONS[level].length, COURSE[level].tasks.length, COURSE[level].title);
     for (let task = 0; task < COURSE[level].tasks.length; task++) {
       const teaching = window.TASK_LESSONS[level][task];
-      assert.equal(teaching.length, 3, `${level + 1}.${task + 1}`);
+      assert.ok(teaching.length === 3 || teaching.length === 4, `${level + 1}.${task + 1}`);
       for (let part = 0; part < teaching.length; part++) {
         assert.ok(teaching[part].length >= (part === 2 ? 25 : 45), `${level + 1}.${task + 1}: missing explanation`);
       }
@@ -101,6 +101,7 @@ test('every exercise has distinct teaching material before practice', () => {
     }
   }
   assert.equal(count, 100);
+  assert.match(window.TASK_LESSONS[1][6][3], /Латинская A.*кириллическая А/);
 });
 
 test('all 100 published solutions pass the real progress checks', async () => {

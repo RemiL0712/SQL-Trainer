@@ -12,7 +12,7 @@ function enhanceLesson(){
   if(guide.extra)lessonCard.querySelector('.guide').insertAdjacentHTML('beforeend',`<div class="guide-note">${esc(guide.extra)}</div>`);
   lessonCard.querySelector('#example-run')?.insertAdjacentHTML('afterend','<div class="example-output" id="example-output" aria-live="polite"></div>');
   const teaching=window.TASK_LESSONS?.[level]?.[task];
-  const teachingHtml=teaching?`<div class="task-learning"><div><b>Что нужно знать</b><p>${esc(teaching[0])}</p></div><div><b>Как собрать запрос</b><p>${esc(teaching[1])}</p></div><div><b>Что должно получиться</b><p>${esc(teaching[2])}</p></div></div>`:`<p>${esc(guide.taskPractice?.[task] || guide.practice)}</p>`;
+  const teachingHtml=teaching?`<div class="task-learning"><div><b>Что нужно знать</b><p>${esc(teaching[0])}</p></div><div><b>Как собрать запрос</b><p>${esc(teaching[1])}</p></div><div><b>Что должно получиться</b><p>${esc(teaching[2])}</p></div>${teaching[3]?`<aside class="task-caution"><b>Важно про похожие символы</b><p>${esc(teaching[3])}</p></aside>`:''}</div>`:`<p>${esc(guide.taskPractice?.[task] || guide.practice)}</p>`;
   taskCard.insertAdjacentHTML('afterbegin', `<section class="task-guide"><strong>Сначала разберём задание</strong>${teachingHtml}<div class="task-guide-actions"><button class="link-btn" id="back-to-guide">Вернуться к объяснению ↑</button><span>После чтения напишите запрос в редакторе и проверьте результат.</span></div></section>`);
   if((hints>=3||solved(level,task))&&data.course[level].tasks[task].explanation){
     const explanation=`<div class="guide-explanation"><strong>Почему это работает</strong><p>${esc(data.course[level].tasks[task].explanation)}</p></div>`;
