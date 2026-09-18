@@ -40,6 +40,13 @@ test('all 100 course solutions execute in isolated SQLite', async () => {
   assert.deepEqual((await runSQL('SELECT id FROM inventory WHERE id=5')).rows, []);
 });
 
+test('Latin A search and SQLite case functions match the lesson data', async () => {
+  const found = await runSQL("SELECT name FROM users WHERE name LIKE 'A%'");
+  assert.deepEqual(found.rows.map(row => row[0]).sort(), ['Alice', 'Amalia']);
+  const changedCase = await runSQL('SELECT city, UPPER(city), LOWER(city) FROM users WHERE id = 1');
+  assert.deepEqual(changedCase.rows, [['Berlin', 'BERLIN', 'berlin']]);
+});
+
 test('register, session, lock, grading and persisted progress', async () => {
   const handler = createHandler({ accounts: new MemoryStore(), sessions: new MemoryStore(), resets: new MemoryStore() });
   let cookie = '';

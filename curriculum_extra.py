@@ -21,10 +21,10 @@ EXTRA = [
     ],
     [
         ("Возрастной порог", "Покажи name и age пользователей от 18 лет включительно.", "SELECT name, age FROM users WHERE age >= 18", "Добавь WHERE по age.", "Включительно означает >=.", "WHERE проверяет условие отдельно для каждой строки."),
-        ("Два условия", "Выведи имена пользователей из Берлина старше 25 лет.", "SELECT name FROM users WHERE city = 'Берлин' AND age > 25", "Нужны два условия.", "Соедини их оператором AND.", "AND требует выполнения обоих условий."),
-        ("Два города", "Выведи имена пользователей из Берлина или Вены.", "SELECT name FROM users WHERE city IN ('Берлин','Вена')", "Можно использовать IN.", "Передай два города в скобках.", "IN проверяет принадлежность значению из списка."),
+        ("Два условия", "Выведи имена пользователей из Берлина старше 25 лет. В данных город записан как Berlin.", "SELECT name FROM users WHERE city = 'Berlin' AND age > 25", "Нужны два условия: city = 'Berlin' и age > 25.", "Соедини их оператором AND.", "AND требует выполнения обоих условий."),
+        ("Два города", "Выведи имена пользователей из Берлина или Вены. В данных города записаны как Berlin и Vienna.", "SELECT name FROM users WHERE city IN ('Berlin','Vienna')", "Можно использовать IN.", "Передай 'Berlin' и 'Vienna' в скобках.", "IN проверяет принадлежность значению из списка."),
         ("Диапазон цен", "Покажи имена товаров с ценой от 500 до 4000 включительно.", "SELECT name FROM products WHERE price BETWEEN 500 AND 4000", "Используй BETWEEN.", "BETWEEN включает обе границы.", "BETWEEN удобен для замкнутого диапазона."),
-        ("Поиск в имени", "Покажи имена пользователей, начинающиеся с буквы А.", "SELECT name FROM users WHERE name LIKE 'А%'", "LIKE принимает шаблон.", "Процент означает любое продолжение строки.", "LIKE 'А%' находит строки с заданным началом."),
+        ("Поиск в имени", "Покажи имена пользователей, начинающиеся с латинской буквы A. Имена в учебной таблице записаны латиницей.", "SELECT name FROM users WHERE name LIKE 'A%'", "LIKE принимает шаблон: 'A%' с латинской A.", "Процент означает любое продолжение строки.", "LIKE 'A%' находит строки с заданным началом."),
     ],
     [
         ("Возраст по убыванию", "Покажи name и age от старших к младшим.", "SELECT name, age FROM users ORDER BY age DESC", "Используй ORDER BY age.", "Убывание обозначается DESC.", "ORDER BY меняет порядок строк результата."),
@@ -62,7 +62,7 @@ EXTRA = [
         ("Есть дорогой заказ", "Выведи имена пользователей, у которых есть заказ с total > 5000, через EXISTS.", "SELECT name FROM users u WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id AND o.total > 5000)", "Подзапрос зависит от внешнего пользователя.", "Свяжи o.user_id = u.id и проверь total.", "EXISTS проверяет наличие подходящего заказа для каждой строки users."),
     ],
     [
-        ("Метка города", "Покажи name и region: 'capital' для Берлина, иначе 'other'.", "SELECT name, CASE WHEN city = 'Берлин' THEN 'capital' ELSE 'other' END AS region FROM users", "Условие относится к city.", "Используй CASE WHEN ... THEN ... ELSE ... END.", "CASE создаёт текстовую метку по условию."),
+        ("Метка города", "Покажи name и region: 'capital' для города Berlin, иначе 'other'.", "SELECT name, CASE WHEN city = 'Berlin' THEN 'capital' ELSE 'other' END AS region FROM users", "Условие относится к city = 'Berlin'.", "Используй CASE WHEN ... THEN ... ELSE ... END.", "CASE создаёт текстовую метку по условию."),
         ("Бесплатная доставка", "Покажи id заказа и shipping: 'free' при total >= 5000, иначе 'paid'.", "SELECT id, CASE WHEN total >= 5000 THEN 'free' ELSE 'paid' END AS shipping FROM orders", "Проверяй total >= 5000.", "Назови результат shipping.", "CASE формирует категорию для каждого заказа."),
         ("Три категории цены", "Покажи name и tier: 'low' при price < 1000, 'mid' при price < 5000, иначе 'high'.", "SELECT name, CASE WHEN price < 1000 THEN 'low' WHEN price < 5000 THEN 'mid' ELSE 'high' END AS tier FROM products", "CASE может содержать несколько WHEN.", "Условия проверяются сверху вниз.", "Первое подходящее WHEN определяет значение tier."),
         ("Активный остаток", "Покажи id и availability: 'out' при quantity = 0, иначе 'in'.", "SELECT id, CASE WHEN quantity = 0 THEN 'out' ELSE 'in' END AS availability FROM inventory", "Проверь quantity = 0.", "Заверши выражение END AS availability.", "CASE переводит числовой остаток в понятный статус."),
