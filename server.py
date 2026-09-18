@@ -121,6 +121,8 @@ def sandbox(query, mode="read", target=None):
         return {"columns": columns, "rows": [list(row) for row in rows]}
     except sqlite3.Error as exc:
         msg = str(exc)
+        if re.search(r"\bOFFSET\s+[A-Za-z_][A-Za-z0-9_]*\s+\d+\b", query, re.I):
+            raise ValueError("Ошибка SQL: после OFFSET укажите только число пропускаемых строк. Столбец id пишется после ORDER BY: ORDER BY id LIMIT 2 OFFSET 1.") from exc
         if "interrupted" in msg:
             raise ValueError("Запрос выполняется слишком долго. Упростите его.") from exc
         if "not authorized" in msg or "access to" in msg:

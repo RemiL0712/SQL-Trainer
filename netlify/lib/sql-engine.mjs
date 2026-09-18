@@ -62,6 +62,9 @@ export async function runSQL(input, mode = 'read', target = null) {
     return result;
   } catch (error) {
     const message = String(error?.message || error);
+    if (/\bOFFSET\s+[A-Za-z_][A-Za-z0-9_]*\s+\d+\b/i.test(query)) {
+      throw new Error('Ошибка SQL: после OFFSET укажите только число пропускаемых строк. Столбец id пишется после ORDER BY: ORDER BY id LIMIT 2 OFFSET 1.');
+    }
     if (/no such table/i.test(message)) throw new Error('Таблица не найдена. Проверьте её имя в схеме данных.');
     if (/no such column/i.test(message)) throw new Error('Столбец не найден. Проверьте его имя в схеме данных.');
     if (/near "FORM"/i.test(message)) throw new Error('Возможно, вы имели в виду FROM. Проверьте написание команды.');

@@ -47,6 +47,13 @@ test('Latin A search and SQLite case functions match the lesson data', async () 
   assert.deepEqual(changedCase.rows, [['Berlin', 'BERLIN', 'berlin']]);
 });
 
+test('a misplaced column after OFFSET gets a useful explanation', async () => {
+  await assert.rejects(
+    runSQL('SELECT name FROM products OFFSET id 1 LIMIT 2'),
+    /после OFFSET укажите только число.*ORDER BY id LIMIT 2 OFFSET 1/,
+  );
+});
+
 test('register, session, lock, grading and persisted progress', async () => {
   const handler = createHandler({ accounts: new MemoryStore(), sessions: new MemoryStore(), resets: new MemoryStore() });
   let cookie = '';
@@ -93,7 +100,7 @@ test('every exercise has distinct teaching material before practice', () => {
     assert.equal(window.TASK_LESSONS[level].length, COURSE[level].tasks.length, COURSE[level].title);
     for (let task = 0; task < COURSE[level].tasks.length; task++) {
       const teaching = window.TASK_LESSONS[level][task];
-      assert.ok(teaching.length === 3 || teaching.length === 4, `${level + 1}.${task + 1}`);
+      assert.ok(teaching.length >= 3 && teaching.length <= 5, `${level + 1}.${task + 1}`);
       for (let part = 0; part < teaching.length; part++) {
         assert.ok(teaching[part].length >= (part === 2 ? 25 : 45), `${level + 1}.${task + 1}: missing explanation`);
       }
@@ -102,6 +109,7 @@ test('every exercise has distinct teaching material before practice', () => {
   }
   assert.equal(count, 100);
   assert.match(window.TASK_LESSONS[1][6][3], /Латинская A.*кириллическая А/);
+  assert.match(window.TASK_LESSONS[2][5][4], /ORDER BY id\nLIMIT 2 OFFSET 1/);
 });
 
 test('all 100 published solutions pass the real progress checks', async () => {
